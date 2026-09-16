@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import type { Recipe } from '../types/recipe';
 import { RecipeCard } from '../components/RecipeCard';
+import { RecipeDetail } from '../pages/RecipeDetail';
 
 export const Home: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -15,7 +17,6 @@ export const Home: React.FC = () => {
           throw new Error('Failed to fetch recipes from Strapi');
         }
         const data = await response.json();
-        console.log('Strapi API Response:', data); // Inspect this in browser console
         setRecipes(data.data);
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Something went wrong';
@@ -51,10 +52,17 @@ export const Home: React.FC = () => {
           <RecipeCard 
             key={recipe.id} 
             recipe={recipe} 
-            onClick={() => console.log('Clicked recipe:', recipe.title)} 
+            onClick={() => setSelectedRecipe(recipe)} 
           />
         ))}
       </div>
+
+      {selectedRecipe && (
+        <RecipeDetail 
+          recipe={selectedRecipe} 
+          onClose={() => setSelectedRecipe(null)} 
+        />
+      )}
     </div>
   );
 };
