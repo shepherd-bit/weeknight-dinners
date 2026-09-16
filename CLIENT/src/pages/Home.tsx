@@ -51,7 +51,7 @@ export const Home: React.FC = () => {
           <RecipeCard 
             key={recipe.id} 
             recipe={recipe} 
-            onClick={() => console.log('Clicked recipe:', recipe.Title)} 
+            onClick={() => console.log('Clicked recipe:', recipe.title)} 
           />
         ))}
       </div>
