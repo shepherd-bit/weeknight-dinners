@@ -13,17 +13,18 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onClose }) =
     ? (rawUrl.startsWith('http') ? rawUrl : `http://localhost:1337${rawUrl}`)
     : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c';
 
-  // Helper to ensure ingredients/methods are safe to map
-  const ingredientsList = Array.isArray(recipe.ingredients) 
-    ? recipe.ingredients 
-    : typeof recipe.ingredients === 'string' 
-      ? recipe.ingredients.split('\n') 
+  const rawIngredients = recipe.ingredients as unknown;
+  const ingredientsList: string[] = Array.isArray(rawIngredients) 
+    ? rawIngredients 
+    : typeof rawIngredients === 'string' 
+      ? rawIngredients.split('\n') 
       : [];
 
-  const methodList = Array.isArray(recipe.method) 
-    ? recipe.method 
-    : typeof recipe.method === 'string' 
-      ? recipe.method.split('\n') 
+  const rawMethod = recipe.method as unknown;
+  const methodList: string[] = Array.isArray(rawMethod) 
+    ? rawMethod 
+    : typeof rawMethod === 'string' 
+      ? rawMethod.split('\n') 
       : [];
 
   return (
@@ -77,7 +78,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onClose }) =
               Ingredients
             </h2>
             <ul className="space-y-4">
-              {ingredientsList.map((ingredient, index) => (
+              {ingredientsList.map((ingredient: string, index: number) => (
                 <li key={index} className="flex items-start text-sm text-neutral-700 leading-relaxed">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-neutral-400 mt-2 mr-3 shrink-0" />
                   <span>{ingredient}</span>
@@ -92,7 +93,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onClose }) =
               Method
             </h2>
             <div className="space-y-8">
-              {methodList.map((step, index) => {
+              {methodList.map((step: string, index: number) => {
                 const stepNumber = (index + 1).toString().padStart(2, '0');
                 return (
                   <div key={index} className="flex items-start gap-6">
